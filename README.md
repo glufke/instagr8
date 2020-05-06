@@ -36,6 +36,7 @@ Being:
 |s | the session ID, i.e. 1234
 |t | this is the TYPE being "u" for username and "t" for tag (or hashtag)
 |n | this is the number of the image being retrieved. (from 1 to ...)
+|v | this is the version of the MSX (1 or 2). It's an optional parameter.
 
 4. SERVER captures the request (I'm using Apache, but you can user NGINX or any other)
 5. SERVER Apache calls the PHP script "msxinsta.php" with all the parameters.
@@ -51,12 +52,13 @@ Being:
 13. SHELL calls WGET to save URL with the JPG. (Saves with the name in1234.jpg, being 1234 the session number created in MSX)
 14. SHELL calls IMAGEMAGICK to resize to 192x192 pixels.
 15. SHELL calls IMAGEMAGICK to add the "Instagr8" logo and MSX logo (it's a 64x192 image) and saves it in a TGA image format)
-16. SHELL calls "scr2floyd_percept.c" script previosuly compiled. This script is found [here](https://www.msx.org/downloads/related/graphics/screen-2-converter). (Thanks ARTRAG and Jannone)
-17. C SCRIPT creates 2 files. out1234.CHR and out1234.CLR. (one for pattern table &H0000 of VRAM and one for color table &H2000 of VRAM).
+16. SHELL calls the conversion C executable. (sc2 or sc8) previosuly compiled. This script is found [here](https://www.msx.org/downloads/related/graphics/screen-2-converter). (Thanks ARTRAG and Jannone)
+17. For MSX1, the sc2.c creates 2 files. out1234.CHR and out1234.CLR. (one for pattern table &H0000 of VRAM and one for color table &H2000 of VRAM).
+    For MSX2, the sc8.c creates just 1 file. out1234.CHR. (Starting at &H0000 to &HD3FF).
 18. Back to PHP, truncates the "Description" of the image to 128 characters. (We don't have more space in the MSX screen. About 16 lines x 8 chars)
 19. PHP sends back to MSX Basic the Description. (While the 2 files, CHR and CLR, are saved in the server)
 20. BASIC retrieves the Description Content.
-21. BASIC uses BLOAD "out1234.CHR" and "out1234.CLR" to load into GR8NET internal memory. 
+21. BASIC uses BLOAD "out1234.CHR" (and "out1234.CLR" for screen 2) to load into GR8NET internal memory. 
 22. BASIC calls GR8NET CALL NETBTOV(0,0) to copy from internal GR8NET ram to VRAM.
 23. BASIC loops the Description and prints the Description 8 chars at the time.
 
