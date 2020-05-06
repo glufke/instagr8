@@ -1,13 +1,15 @@
 <?
-//Get the 4 parameters:
+//Get the 5 parameters:
 // * s - SESSION (just a number to be used as driving name for files)
 // * u - USER (the Instagram username or the Instagram TAG, without #))
 // * t - TYPE (this can be "u" for user, or "t" for tag.)
 // * n - NUMBER of the post to retrieve.
+// * v - VERSION (Being 1 or 2). This is optional.
 $ses= htmlspecialchars($_GET["s"])   ;
 $t  = htmlspecialchars($_GET["t"])   ;
 $us = htmlspecialchars($_GET["u"])   ;
 $num= htmlspecialchars($_GET["n"])   ;
+$ver= htmlspecialchars($_GET["v"])   ;
 
 //Verify the inputs parameters
 if ($ses=='') 
@@ -17,7 +19,7 @@ if ($ses=='')
 if (! is_numeric($ses) )
   { echo "ERROR03-Session should be a number";
     exit;
-  }	
+  }
 if ($us =='')
   { echo "ERROR02-User is mandatory";
     exit;
@@ -27,6 +29,7 @@ if ($us =='')
 if ($t  =='') $t='u';
 if ($num=='' ) $num=0;
 else $num=$num-1;
+if ($ver=='') $ver=1;
 
 //Open the correct URL depending of the type.
 if     ($t=='u') $json = file_get_contents("https://www.instagram.com/$us?__a=1");
@@ -61,7 +64,7 @@ $text =  substr( str_replace( chr(13), ' ', $nod["edge_media_to_caption"]["edges
 echo $text;
 
 //Captures the URL of the IMAGE to be converted
-$cmd = 'bash /home/ubuntu/apache/instagr8/instaconv.sh '.$ses.' "'.$nod["thumbnail_src"].'"';
+$cmd = 'bash /home/ubuntu/apache/instagr8/instaconv.sh '.$ses.' "'.$nod["thumbnail_src"].'" '.$ver;
 $oo = shell_exec($cmd); 
 
 ?>
