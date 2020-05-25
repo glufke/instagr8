@@ -20,7 +20,7 @@ MSX computers run at 3.56mhz and have about 25KB of memory available in Basic. I
 - connect into HTTPS (Instagram API)
 - retrieve huge JSON files and parse the JSON
 - download huge images from the Instagram API
-- convert it to 16 colors (SCREEN 2) or 512 colors (SCREEN 8) low resolution
+- convert it to 16 colors (SCREEN 2) or 256 colors (SCREEN 8) low resolution
 That's why a server is needed in the middle, to make all the heavy work.
 
 ### HOW IT WORKS (Detailed explanation)
