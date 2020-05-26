@@ -8,7 +8,8 @@ Oficial msx.org topic: [Link](https://www.msx.org/forum/msx-talk/software/msx-in
 
 ### INSTRUCTIONS
 * Download the file INSTAGR8.BAS and save in a floppy disk or SD card for your MSX.
-* You can download the last version directly in MSX using [HGET](https://www.konamiman.com/msx/networking/hget.com) with this command:
+* You can download the last version directly in MSX using [HGET](https://www.konamiman.com/msx/networking/hget.com) with this command in MSX DOS:
+
 `hget glufke.ddns.net:8080/INSTAGR8.BAS`
 * In BASIC, execute with:
 LOAD "INSTAGR8.BAS",R
