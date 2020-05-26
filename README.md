@@ -1,13 +1,15 @@
 # instagr8 for MSX1 and MSX2
 
 Watch:
-Youtube video1: [Link](https://www.youtube.com/watch?v=L-G7gzgepdA)
-Youtube video2: [Link](https://youtu.be/487cka18JU4)
+* Youtube video1: [Link](https://www.youtube.com/watch?v=L-G7gzgepdA)
+* Youtube video2: [Link](https://youtu.be/487cka18JU4)
 
 Oficial msx.org topic: [Link](https://www.msx.org/forum/msx-talk/software/msx-instagr8-instagram-for-msx1)
 
 ### INSTRUCTIONS
 * Download the file INSTAGR8.BAS and save in a floppy disk or SD card for your MSX.
+* You can download the last version directly in MSX using [HGET](https://www.konamiman.com/msx/networking/hget.com) with this command:
+`hget glufke.ddns.net:8080/INSTAGR8.BAS`
 * In BASIC, execute with:
 LOAD "INSTAGR8.BAS",R
 
