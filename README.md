@@ -1,12 +1,21 @@
 # instagr8 for MSX1 and MSX2
 
-Watch the Youtube video: [Link](https://www.youtube.com/watch?v=L-G7gzgepdA)
+Watch:
+Youtube video1: [Link](https://www.youtube.com/watch?v=L-G7gzgepdA)
+Youtube video2: [Link](https://youtu.be/487cka18JU4)
+
 Oficial msx.org topic: [Link](https://www.msx.org/forum/msx-talk/software/msx-instagr8-instagram-for-msx1)
 
 ### INSTRUCTIONS
 * Download the file INSTAGR8.BAS and save in a floppy disk or SD card for your MSX.
 * In BASIC, execute with:
 LOAD "INSTAGR8.BAS",R
+
+Type the instagram account or a tag (starting with #)
+Press right to go to next picture.
+Press ESC to choose another account or tag
+Press 1 to switch to MSX1 - Screen2.
+Press 2 to switch to MSX2 - Screen8. (only if you have an MSX2, otherwise it will be ignored)
 
 ### WHAT IS NEEDED:
 You need only the cartridge GR8NET. It doesn't matter what SETMAP it is configured.
