@@ -1,5 +1,8 @@
 # instagr8 for MSX1 and MSX2
 
+
+* * * * SERVER WAS BLACKLISTED BY INSTAGRAM - NOT WORKING UNTIL A NEW WAY IS FOUND TO ACCESS INSTAGRAM * * * * 
+
 Watch:
 * Youtube video1: [Link](https://www.youtube.com/watch?v=L-G7gzgepdA)
 * Youtube video2: [Link](https://youtu.be/487cka18JU4)
