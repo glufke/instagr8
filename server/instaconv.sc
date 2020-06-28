@@ -32,26 +32,42 @@ then
   echo "This program requires 2 parameters:"
   echo " - SESSION_ID --> A number"
   echo " - IMAGE_URL  --> The URL to be converted (For now, a jpg image)"
+  echo " - VERSION    --> (Optional). This may be 1 or 2. (for msx1 or msx2)"
   exit 0
 fi
+
+#Deletes old files, if found.
+find $IMGPATH -mmin +2 -type f -exec rm -fv {} \;
 
 #Set Image names/path
 INPFILE="${IMGPATH}in${SES}.jpg"
 OUTFILE="${IMGPATH}out${SES}.tga"
-TMPFILE="${IMGPATH}tmp${SES}.jpg"
+TMPFILE="${IMGPATH}tmp${SES}.png"
+TMPFILE2="${IMGPATH}tmpi${SES}.png"
+TXTIMGFILE="${IMGPATH}txt${SES}.bmp"
+TXTFILE="${IMGPATH}txt${SES}.txt" 
 rm $OUTFILE
 
 #Download the Image URL
 wget  "$IMG" -O $INPFILE 
+chmod 666 $INPFILE
 
 # ------- MSX 1 conversion
 if [[ "$VER" = "1" ]]; 
 then
 #convert the image to MSX size
 convert $INPFILE -orient BottomLeft -resize 256x192 -background black -gravity center -extent 256x192 -roll +32+0 $TMPFILE
+chmod 666 $TMPFILE
+
+#create TEXT to img
+convert -size 64x140 -background white -font small5.ttf -pointsize 10 caption:"$(cat $TXTFILE)" +dither -monochrome  $TXTIMGFILE
+chmod 666 $TXTIMGFILE
 
 #add instragr8 logo and msx logo (64x192 pixels)
-composite instagr81l.bmp $TMPFILE $OUTFILE
+composite instagr81l.bmp $TMPFILE $TMPFILE2
+chmod 666 $TMPFILE2
+
+composite -geometry +0+25 $TXTIMGFILE $TMPFILE2 $OUTFILE
 
 #convert the imge to Screen2 Tiles and Color. (thanks https://www.msx.org/downloads/related/graphics/screen-2-converter )
 ./sc2 $OUTFILE
@@ -61,11 +77,18 @@ fi
 if [[ "$VER" = "2" ]];
 then
 #convert the image to MSX size
-convert $INPFILE -orient BottomLeft -resize 256x212 -background black -gravity center -extent 256x212 -roll +32+0 $TMPFILE
+convert $INPFILE -orient BottomLeft -resize 256x212 -background black -gravity center -extent 256x212 -roll +22+0 $TMPFILE
+chmod 666 $TMPFILE
+
+#create TEXT to img
+convert -size 44x160 -background white -font Courier -pointsize 10 caption:"$(cat $TXTFILE)" $TXTIMGFILE
+chmod 666 $TXTIMGFILE 
 
 #add instragr8 logo and msx logo (64x192 pixels)
-composite instagr82l.bmp $TMPFILE $OUTFILE
+composite instagr82l.bmp $TMPFILE $TMPFILE2
+chmod 666 $TMPFILE2
 
+composite -geometry +0+25 $TXTIMGFILE $TMPFILE2 $OUTFILE
 #convert the imge to Screen8. (Just 1 file)
 ./sc8 $OUTFILE 
 fi
