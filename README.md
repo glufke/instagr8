@@ -1,7 +1,6 @@
 # instagr8 for MSX1 and MSX2
 
-
-* * * * SERVER WAS BLACKLISTED BY INSTAGRAM - NOT WORKING UNTIL A NEW WAY IS FOUND TO ACCESS INSTAGRAM * * * * 
+NOTE: I am using a Raspberry Pi 1B as server. (very slow) for now. As soon I can get this back to AWS, it will be faster again.
 
 Watch:
 * Youtube video1: [Link](https://www.youtube.com/watch?v=L-G7gzgepdA)
