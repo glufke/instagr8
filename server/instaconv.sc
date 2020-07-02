@@ -60,7 +60,7 @@ convert $INPFILE -orient BottomLeft -resize 256x192 -background black -gravity c
 chmod 666 $TMPFILE
 
 #create TEXT to img
-convert -size 64x140 -background white -font small5.ttf -pointsize 10 caption:"$(cat $TXTFILE)" +dither -monochrome  $TXTIMGFILE
+convert -size 64x140 -interline-spacing -2 -background white -font small5.ttf -pointsize 10 caption:"$(cat $TXTFILE)" +dither -monochrome  $TXTIMGFILE
 chmod 666 $TXTIMGFILE
 
 #add instragr8 logo and msx logo (64x192 pixels)
@@ -81,7 +81,7 @@ convert $INPFILE -orient BottomLeft -resize 256x212 -background black -gravity c
 chmod 666 $TMPFILE
 
 #create TEXT to img
-convert -size 44x160 -background white -font Courier -pointsize 10 caption:"$(cat $TXTFILE)" $TXTIMGFILE
+convert -size 44x160 -background white -font Courier -pointsize 8 caption:"$(cat $TXTFILE)" $TXTIMGFILE
 chmod 666 $TXTIMGFILE 
 
 #add instragr8 logo and msx logo (64x192 pixels)

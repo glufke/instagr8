@@ -1,10 +1,12 @@
 <? 
-
 //Generate all types of errors in the screen.
 error_reporting(E_ALL);
 ini_set("display_errors", "1"); // shows all errors
 ini_set("log_errors", 1);
 
+//==========================================
+// FUNCTION DEFINITION
+//==========================================
 //This will create the LOGS in a file, for debug purpose.
 $ll = null;
 $ll = function ( $filelog, $ptxt ) {
@@ -13,6 +15,21 @@ $ll = function ( $filelog, $ptxt ) {
   fwrite($fp, '<br>'.date("y.m.d H:i:s").' :: ' .$ptxt);
   fclose($fp);
 };
+
+//Function to split in Unicode
+function chunk_split_unicode($str, $l = 76, $e = "\n") {
+    $tmp = array_chunk(
+        preg_split("//u", $str, -1, PREG_SPLIT_NO_EMPTY), $l);
+    $str = "";
+    foreach ($tmp as $t) {
+        $str .= join("", $t) . $e;
+    }
+    return $str;
+}
+
+//===========================================
+// START 
+//===========================================
 
 //Get the 5 parameters:
 // * s - SESSION (just a number to be used as driving name for files)
@@ -63,12 +80,12 @@ $jsonfile = 'json'.$ses.'.txt';
 //Open the correct URL depending of the type.
 if     ($t=='u') $url = "https://www.instagram.com/$us/?__a=1";
 elseif ($t=='t') $url = "https://www.instagram.com/explore/tags/$us/?__a=1";
-
 else exit;
 
 $oo = shell_exec("touch img/".$jsonfile );
 $oo = shell_exec("chmod 666 img/".$jsonfile);
 $cmd = 'curl "'.$url.'">img/'.$jsonfile;
+$ll( $filelog, 'RETRIEVE json command: ' .$cmd);
 $oo = shell_exec( $cmd );
 
 //read File and save to variable
@@ -94,7 +111,7 @@ if ($t=='u')
 //If type=T, saves only the TAG.
 if ($t=='t')
 {
-  $userinfo =  'Tag #'. $us.' '; 
+  $userinfo =  'Tag #'. $us; 
 }
 $ll($filelog, 'Userinfo found: :: '.$userinfo); 
 
@@ -103,15 +120,36 @@ $ll($filelog, 'Userinfo found: :: '.$userinfo);
 if ($t=='u') $nod = $arr["graphql"]["user"]["edge_owner_to_timeline_media"]["edges"][$num]["node"]; 
 if ($t=='t') $nod = $arr["graphql"]["hashtag"]["edge_hashtag_to_top_posts"]["edges"][$num]["node"];
 
-//Save the Description of the post.
-$text =  substr( str_replace( chr(13), ' ', $userinfo.' '.$nod["edge_media_to_caption"]["edges"]["0"]["node"]["text"])     ,0,16*8-1) ;  
+$text = $nod["edge_media_to_caption"]["edges"]["0"]["node"]["text"];
 
+//Add the translate ENTER to SPACE.     
+$text = str_replace( chr(10), ' ', $text); 
+
+//Save the Description of the post.
+if ($ver == "1" )
+  {
+  //For MSX1 ONLY, remove all the special chars, due to the use of the small font.
+  $text = preg_replace('/[^a-zA-Z0-9_ -]/s', '', $text) ;
+  //Format the text adding a CRLF to each N chars. (in order to fit in the screen correctly. Imagemagick WORD WRAP doesn't work very well.
+  $text     = chunk_split_unicode($text, 11);
+  $userinfo = chunk_split_unicode($userinfo, 11);  
+  //Limit the size to N lines
+  $text =  substr( $userinfo.chr(10).$text  ,0 , 11*14) ;  
+  }
+else if ($ver == "2" )
+  {
+  //Format the text adding a CRLF to each N chars. (in order to fit in the screen correctly. Imagemagick WORD WRAP doesn't work very well.
+  $text     = chunk_split_unicode($text,8 );
+  $userinfo = chunk_split_unicode($userinfo,8 );  
+  //Limit the size to N lines
+  $text =  substr(  $userinfo.chr(10).$text  ,0 , 8*21) ;  
+  }
+;
 
 //Save the text content in a TXT file, to be used later by the IMAGE generator. 
 $file = 'txt'.$ses.'.txt';
 $fp = fopen( 'img/'.$file, 'w');
 if (!$fp) echo "Error! Couldn't open the TXT file ".$file;
-$text = preg_replace('/[^a-zA-Z0-9_ -]/s', '', $text) ;
 $ll($filelog, 'Text of the image: ' .$text );
 fwrite($fp,  $text ); 
 fclose($fp);
@@ -126,5 +164,6 @@ $ll($filelog, 'Call shell conversion: '. $cmd);
 $ll($filelog, 'OUTPUT of instaconv.sc:' );
 $ll($filelog, $oo);
 
-echo 'INSTA-OK';
+//Return OK.Anything else ERROR and should be displayed to the user.
+echo 'OK';
 ?>
